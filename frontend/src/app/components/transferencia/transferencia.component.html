@@ -1,0 +1,92 @@
+<div class="container">
+  <h1>Transferência entre Beneficiários</h1>
+
+  <!-- Mensagens de sucesso -->
+  <div *ngIf="sucesso" class="alert alert-success">
+    {{ sucesso }}
+  </div>
+
+  <!-- Mensagens de erro -->
+  <div *ngIf="erro" class="alert alert-error">
+    {{ erro }}
+  </div>
+
+  <div class="transfer-form">
+    <!-- Conta de Origem -->
+    <div class="form-group">
+      <label>Conta de Origem *</label>
+      <select
+        [(ngModel)]="fromId"
+        (change)="onFromChange($event)"
+        class="form-control"
+      >
+        <option [value]="null">Selecione uma conta...</option>
+        <option *ngFor="let ben of beneficiarios" [value]="ben.id">
+          {{ ben.nome }} - R$ {{ ben.valor.toFixed(2) }}
+        </option>
+      </select>
+      <div *ngIf="saldoOrigem !== null" class="saldo-info">
+        Saldo: R$ {{ saldoOrigem.toFixed(2) }}
+      </div>
+    </div>
+
+    <!-- Conta de Destino -->
+    <div class="form-group">
+      <label>Conta de Destino *</label>
+      <select
+        [(ngModel)]="toId"
+        (change)="onToChange($event)"
+        class="form-control"
+      >
+        <option [value]="null">Selecione uma conta...</option>
+        <option *ngFor="let ben of beneficiarios" [value]="ben.id">
+          {{ ben.nome }} - R$ {{ ben.valor.toFixed(2) }}
+        </option>
+      </select>
+      <div *ngIf="saldoDestino !== null" class="saldo-info">
+        Saldo: R$ {{ saldoDestino.toFixed(2) }}
+      </div>
+    </div>
+
+    <!-- Valor da Transferência -->
+    <div class="form-group">
+      <label>Valor da Transferência *</label>
+      <input
+        type="number"
+        [(ngModel)]="amount"
+        placeholder="Digite o valor..."
+        class="form-control"
+        step="0.01"
+        min="0"
+      />
+    </div>
+
+    <!-- Botões -->
+    <div class="form-actions">
+      <button
+        (click)="processarTransferencia()"
+        [disabled]="loading || !fromId || !toId || !amount"
+        class="btn btn-primary"
+      >
+        {{ loading ? 'Processando...' : 'Transferir' }}
+      </button>
+      <button (click)="limparFormulario()" class="btn btn-secondary">
+        Limpar
+      </button>
+    </div>
+
+    <!-- Resumo da transferência -->
+    <div *ngIf="fromId && toId && amount" class="transfer-summary">
+      <h3>Resumo da Transferência</h3>
+      <p>
+        De: <strong>{{ getNomeBeneficiarioOrigem() }}</strong>
+      </p>
+      <p>
+        Para: <strong>{{ getNomeBeneficiarioDestino() }}</strong>
+      </p>
+      <p>
+        Valor: <strong>R$ {{ amount.toFixed(2) }}</strong>
+      </p>
+    </div>
+  </div>
+</div>

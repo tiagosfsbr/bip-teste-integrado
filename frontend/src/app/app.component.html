@@ -1,0 +1,25 @@
+<header class="navbar">
+  <div class="navbar-container">
+    <h1 class="navbar-brand">💰 {{ title }}</h1>
+    <button class="nav-toggle" (click)="toggleNav()">☰</button>
+    <nav class="navbar-menu" [class.open]="navAberta">
+      <a routerLink="/" class="nav-link" (click)="fecharNav()" [class.active]="router.url === '/'">
+        Beneficiários
+      </a>
+      <a routerLink="/transferencia" class="nav-link" (click)="fecharNav()" [class.active]="router.url === '/transferencia'">
+        Transferência
+      </a>
+      <a href="http://localhost:8080/swagger-ui/index.html" target="_blank" class="nav-link">
+        API Docs
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="footer">
+  <p>&copy; 2026 Desafio Fullstack Integrado. Todos os direitos reservados.</p>
+</footer>

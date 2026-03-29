@@ -1,0 +1,140 @@
+<div class="container">
+  <h1>Gerenciador de Beneficiários</h1>
+
+  <!-- Mensagens de sucesso -->
+  <div *ngIf="sucesso" class="alert alert-success">
+    {{ sucesso }}
+  </div>
+
+  <!-- Mensagens de erro -->
+  <div *ngIf="erro" class="alert alert-error">
+    {{ erro }}
+  </div>
+
+  <!-- Filtro de busca e botão de criar -->
+  <div class="search-section">
+    <div class="search-group">
+      <input
+        type="text"
+        [(ngModel)]="filtroNome"
+        placeholder="Buscar por nome..."
+        class="search-input"
+        (keyup.enter)="buscarPorNome()"
+      />
+      <button (click)="buscarPorNome()" class="btn btn-primary">Buscar</button>
+      <button (click)="limparFiltro()" class="btn btn-secondary">Limpar</button>
+    </div>
+    <button (click)="abrirFormulario()" class="btn btn-success">+ Novo Beneficiário</button>
+  </div>
+
+  <!-- Formulário de criação -->
+  <div *ngIf="mostrarFormulario" class="form-container">
+    <h2>Adicionar Novo Beneficiário</h2>
+    <form (ngSubmit)="salvarBeneficiario()">
+      <div class="form-group">
+        <label for="nome">Nome *</label>
+        <input
+          id="nome"
+          type="text"
+          [(ngModel)]="novobeneficio.nome"
+          name="nome"
+          placeholder="Nome do beneficiário"
+          class="form-input"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="descricao">Descrição *</label>
+        <textarea
+          id="descricao"
+          [(ngModel)]="novobeneficio.descricao"
+          name="descricao"
+          placeholder="Descrição do beneficiário"
+          class="form-input"
+          rows="3"
+          required
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="valor">Valor (R$) *</label>
+        <input
+          id="valor"
+          type="number"
+          [(ngModel)]="novobeneficio.valor"
+          name="valor"
+          placeholder="0.00"
+          class="form-input"
+          step="0.01"
+          min="0"
+          required
+        />
+      </div>
+
+      <div class="form-group checkbox">
+        <label for="ativo">
+          <input
+            id="ativo"
+            type="checkbox"
+            [(ngModel)]="novobeneficio.ativo"
+            name="ativo"
+          />
+          Ativo
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="carregandoFormulario">
+          {{ carregandoFormulario ? 'Salvando...' : 'Salvar' }}
+        </button>
+        <button type="button" (click)="fecharFormulario()" class="btn btn-secondary">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Lista de beneficiários -->
+  <div *ngIf="loading" class="loading">
+    Carregando beneficiários...
+  </div>
+
+  <div *ngIf="!loading && beneficiarios.length === 0 && !mostrarFormulario" class="empty-state">
+    <p>Nenhum beneficiário encontrado</p>
+  </div>
+
+  <div *ngIf="!loading && beneficiarios.length > 0" class="table-container">
+    <table class="beneficiarios-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Descrição</th>
+          <th>Valor</th>
+          <th>Status</th>
+          <th>Versão</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ben of beneficiarios" [class.inactive]="!ben.ativo">
+          <td>{{ ben.id }}</td>
+          <td>{{ ben.nome }}</td>
+          <td>{{ ben.descricao }}</td>
+          <td class="valor">R$ {{ ben.valor.toFixed(2) }}</td>
+          <td>
+            <span [class]="ben.ativo ? 'status-ativo' : 'status-inativo'">
+              {{ ben.ativo ? 'Ativo' : 'Inativo' }}
+            </span>
+          </td>
+          <td>{{ ben.version }}</td>
+          <td class="acoes">
+            <!-- <button (click)="abrirDetalhes(ben.id!)" class="btn btn-small btn-info">Ver</button> -->
+            <button (click)="deletar(ben.id!)" class="btn btn-small btn-danger">Deletar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

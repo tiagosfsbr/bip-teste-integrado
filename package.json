@@ -1,0 +1,36 @@
+{
+  "name": "desafio-fullstack-integrado",
+  "version": "1.0.0",
+  "description": "Solução completa em camadas (DB, EJB, Backend, Frontend) para gerenciamento de beneficiários com transferências seguras",
+  "main": "index.js",
+  "scripts": {
+    "backend": "cd backend-module && mvn spring-boot:run",
+    "frontend": "cd frontend && npm start",
+    "build": "cd backend-module && mvn clean package",
+    "test": "cd backend-module && mvn test",
+    "docs": "open http://localhost:8080/swagger-ui.html"
+  },
+  "keywords": [
+    "fullstack",
+    "angular",
+    "spring-boot",
+    "jpa",
+    "rest-api",
+    "testing"
+  ],
+  "author": "Desafio Fullstack",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seu-usuario/desafio-fullstack-integrado.git"
+  },
+  "bugs": {
+    "url": "https://github.com/seu-usuario/desafio-fullstack-integrado/issues"
+  },
+  "homepage": "https://github.com/seu-usuario/desafio-fullstack-integrado#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0",
+    "java": ">=17"
+  }
+}
